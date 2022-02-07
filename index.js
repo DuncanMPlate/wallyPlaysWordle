@@ -1,4 +1,4 @@
-const PORT = 8000
+const PORT =  3000
 const axios = require("axios").default
 const express = require("express")
 const cors = require("cors")
