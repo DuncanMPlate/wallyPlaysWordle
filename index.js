@@ -23,7 +23,7 @@ app.get('/wordle.js', function (req, res) {
 app.get('/word', (req, res) => {
 	// console.log(res)
 	const file = fs.readFileSync(path.join(__dirname, '/words/words.txt'), 'utf8');
-	const wordarry = file.split('\r\n')
+	const wordarry = file.split(/\r?\n/)
 	const min = Math.ceil(0)
 	const max = Math.max(wordarry.length)
 	const wod = Math.floor(Math.random() * (max -min) + min)
