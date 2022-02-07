@@ -127,7 +127,7 @@ const checkRow = () => {
 					showMessage('word not in list')
 					return
 				} else {
-					console.log('guess is ' + guess, 'worlde is ' + wordle)
+					console.log('guess is ' + guess)
 					flipTile()
 					if (wordle == guess) {
 						showMessage('Magnificent')
