@@ -8,12 +8,16 @@ require('dotenv').config()
 const app = express()
 app.use(cors())
 
+app.get('/', function (req, res) {
+	res.sendFile(path.join(__dirname, '/index.html',))
+});
+
 app.get('/index.html', function (req, res) {
 	res.sendFile(path.join(__dirname, '/index.html',))
 });
 
 app.get('/wordle.html', function (req, res) {
-	res.sendFile(path.join(__dirname, '/wordle.html',))
+	res.sendFile(path.join(__dirname, "/wordle.html"))
 });
 
 app.get('/style.css', function (req, res) {
