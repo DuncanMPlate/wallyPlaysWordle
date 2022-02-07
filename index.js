@@ -24,9 +24,9 @@ app.get('/word', (req, res) => {
 	// console.log(res)
 	const file = fs.readFileSync('./words/words.txt', 'utf8');
 	const wordarry = file.split('\r\n')
-	var min = Math.ceil(0)
-	var max = Math.max(wordarry.length)
-	var wod = Math.floor(Math.random() * (max -min) + min)
+	const min = Math.ceil(0)
+	const max = Math.max(wordarry.length)
+	const wod = Math.floor(Math.random() * (max -min) + min)
 	const wordle = wordarry[wod]
 	
 	res.json(wordle)
@@ -48,22 +48,30 @@ app.get('/word', (req, res) => {
 })
 
 app.get('/check', (req, res) => {
-	const word = req.query.word
-	const options = {
-		method: 'GET',
-		url: 'https://twinword-word-graph-dictionary.p.rapidapi.com/association/',
-		params: {entry: word},
-		headers: {
-			'x-rapidapi-host': 'twinword-word-graph-dictionary.p.rapidapi.com',
-			'x-rapidapi-key': process.env.RAPID_API_KEY
+	const file = fs.readFileSync('./words/words.txt', 'utf8');
+	const wordarry = file.split('\r\n')
+	const word = req.query.word.toLowerCase()
+	
+	if (wordarry.includes(word)) {
+		res.json(word)}
+		else {
+			res.json('Entry word not found')
 		}
-	}
-	axios.request(options).then((response) => {
-		console.log(response.data)
-		res.json(response.data.result_msg);
-	}).catch((error) => {
-		console.error(error);
-	});
+	// const options = {
+	// 	method: 'GET',
+	// 	url: 'https://twinword-word-graph-dictionary.p.rapidapi.com/association/',
+	// 	params: {entry: word},
+	// 	headers: {
+	// 		'x-rapidapi-host': 'twinword-word-graph-dictionary.p.rapidapi.com',
+	// 		'x-rapidapi-key': process.env.RAPID_API_KEY
+	// 	}
+	// }
+	// axios.request(options).then((response) => {
+	// 	console.log(response.data)
+	// 	res.json(response.data.result_msg);
+	// }).catch((error) => {
+	// 	console.error(error);
+	// });
 })
 
 
