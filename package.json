@@ -24,6 +24,7 @@
     "dotenv": "^16.0.0",
     "env": "^0.0.2",
     "express": "^4.17.2",
+    "express-openid-connect": "^2.6.0",
     "nodemon": "^2.0.15"
   }
 }
