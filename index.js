@@ -2,6 +2,7 @@ const path = require("path")
 const PORT =  3000
 const axios = require("axios").default
 const express = require("express")
+const fs = require('fs')
 const cors = require("cors")
 require('dotenv').config() 
 const app = express()
@@ -20,22 +21,30 @@ app.get('/wordle.js', function (req, res) {
 });
 
 app.get('/word', (req, res) => {
-	console.log(res)
-	const options = {
-		method: 'GET',
-		url: 'https://random-words5.p.rapidapi.com/getMultipleRandom',
-		params: {count: '5', wordLength: '5'},
-		headers: {
-			'x-rapidapi-host': 'random-words5.p.rapidapi.com',
-			'x-rapidapi-key': process.env.RAPID_API_KEY
-	  	}
-	}
+	// console.log(res)
+	const file = fs.readFileSync('./words/words.txt', 'utf8');
+	const wordarry = file.split('\r\n')
+	var min = Math.ceil(0)
+	var max = Math.max(wordarry.length)
+	var wod = Math.floor(Math.random() * (max -min) + min)
+	const wordle = wordarry[wod]
 	
-	axios.request(options).then((response) => {
-		console.log(response.data)
-		res.json(response.data[0]);
-	}).catch((error) => {
-		console.error(error)})
+	res.json(wordle)
+	// const options = {
+	// 	method: 'GET',
+	// 	url: 'https://random-words5.p.rapidapi.com/getMultipleRandom',
+	// 	params: {count: '5', wordLength: '5'},
+	// 	headers: {
+	// 		'x-rapidapi-host': 'random-words5.p.rapidapi.com',
+	// 		'x-rapidapi-key': process.env.RAPID_API_KEY
+	//   	}
+	// }
+	
+	// axios.request(options).then((response) => {
+	// 	console.log(response.data)
+	// 	res.json(response.data[0]);
+	// }).catch((error) => {
+	// 	console.error(error)})
 })
 
 app.get('/check', (req, res) => {

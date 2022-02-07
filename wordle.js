@@ -9,7 +9,7 @@ const getWordle = () => {
 	fetch('/word')
 		.then(response => response.json())
 		.then(json => {
-			console.log(json)
+			
 			wordle = json.toUpperCase()
 
 		})
