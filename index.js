@@ -1,3 +1,4 @@
+const path = require("path")
 const PORT =  3000
 const axios = require("axios").default
 const express = require("express")
@@ -5,6 +6,18 @@ const cors = require("cors")
 require('dotenv').config() 
 const app = express()
 app.use(cors())
+
+app.get('/', function (req, res) {
+	res.sendFile(path.join(__dirname, '/index.html',))
+});
+
+app.get('/style.css', function (req, res) {
+	res.sendFile(__dirname + "/" + "style.css");
+});
+
+app.get('/wordle.js', function (req, res) {
+	res.sendFile(__dirname + "/" + "wordle.js");
+});
 
 app.get('/word', (req, res) => {
 	console.log(res)
