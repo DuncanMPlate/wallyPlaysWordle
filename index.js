@@ -22,7 +22,7 @@ app.get('/wordle.js', function (req, res) {
 
 app.get('/word', (req, res) => {
 	// console.log(res)
-	const file = fs.readFileSync('./words/words.txt', 'utf8');
+	const file = fs.readFileSync(path.join(__dirname, '/words/words.txt'), 'utf8');
 	const wordarry = file.split('\r\n')
 	const min = Math.ceil(0)
 	const max = Math.max(wordarry.length)
@@ -48,7 +48,7 @@ app.get('/word', (req, res) => {
 })
 
 app.get('/check', (req, res) => {
-	const file = fs.readFileSync('./words/words.txt', 'utf8');
+	const file = fs.readFileSync(path.join(__dirname, '/words/words.txt'), 'utf8');
 	const wordarry = file.split('\r\n')
 	const word = req.query.word.toLowerCase()
 	
