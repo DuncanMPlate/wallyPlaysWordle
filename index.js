@@ -8,8 +8,32 @@ require('dotenv').config()
 const app = express()
 app.use(cors())
 
+const auth = require('./middleware/auth');
+const requiresAuth = require('./middleware/requiresAuth');
+const attemptSilentLogin = require('./middleware/attemptSilentLogin');
+
+module.exports = {
+	auth,
+	...requiresAuth,
+	attemptSilentLogin,
+};
+const { auth } = require('express-openid-connect');
+
+const config = {
+	authRequired: false,
+	auth0Logout: true,
+	secret: process.env.SECRET,
+	baseURL: process.env.BASE_URL,
+	clientID: process.env.CLIENT_ID,
+	issuerBaseURL: process.env.ISSUER_BASE_URL
+};
+
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
+
 app.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname, '/index.html',))
+	res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 });
 
 app.get('/index.html', function (req, res) {
