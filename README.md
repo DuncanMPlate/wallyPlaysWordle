@@ -4,8 +4,9 @@ Primary goal is to build a NN that can successfully play the popular word game W
 set up a website to host the wordle app
 
 TO DO LIST:
-	STOP USING APIS TO CHECK WORDS AND GENERATE RANDOM WORDS
+	
 	generate userauth so people can have accounts
 	generate scoring parameters for individual accounts 
 	generate a bot to play wordle on the webpage
 	generate NN to learn from bots behavior and improve bots scores
+	address bug#1: not providing information for double letters in the wordle

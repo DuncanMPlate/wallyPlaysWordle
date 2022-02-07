@@ -7,6 +7,11 @@ body {
 	background-color: #121213;
 }
 
+.container {
+	text-align: center;
+
+}
+
 .title-container {
 	text-align: center;
 	width: 510px;
@@ -15,7 +20,7 @@ body {
 
 .key-container {
 	width: 510p;
-	display: flex;
+	display: flexbox;
 	flex-wrap: wrap;
 }
 .key-container button {
@@ -27,12 +32,15 @@ body {
 	color: #ffffff;
 	margin: 4px;
 }
-.key-container button:nth-child(11) {
+.key-container button:nth-child(12) {
 	margin-left: 30px;
 }
-.key-container button:nth-child(20),
-.key-container button:nth-child(28) {
+.key-container button:nth-child(11) {
 	width: 68px;
+}
+.key-container button:nth-child(21) {
+	width: 68px;
+	margin-right: 30px;
 }
 .tile-container {
 	width: 330px;

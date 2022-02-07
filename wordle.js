@@ -27,6 +27,7 @@ const keys = [
 	'I',
 	'O',
 	'P',
+	'<<',
 	'A',
 	'S',
 	'D',
@@ -44,7 +45,7 @@ const keys = [
 	'B',
 	'N',
 	'M',
-	'<<',
+	
 ]
 const guessRows = [
 	['', '', '', '', ''],
