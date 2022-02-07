@@ -63,7 +63,7 @@ app.get('/check', (req, res) => {
 	const file = fs.readFileSync(path.join(__dirname, '/words/words.txt'), 'utf8');
 	const wordarry = file.split(/\r?\n/)
 	const word = req.query.word.toLowerCase()
-	console.log(wordarry)
+	
 	if (wordarry.includes(word)) {
 		res.json(word)}
 		else {

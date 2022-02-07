@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 #node modules
 node_modules
+# sudo -u nodejs pm2 restart hello
