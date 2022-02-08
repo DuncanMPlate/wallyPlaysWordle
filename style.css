@@ -104,3 +104,41 @@ body {
 	background-color: #538d4e !important;
 	border: none;
 }
+label {
+    display: block;
+    font: .9rem 'Fira Sans', sans-serif;
+}
+
+input[type='submit'],
+label {
+    margin-top: 1rem;
+}
+form.form {
+    display: block;
+    height: 100%;
+    width: 100%;
+    max-width: 400px;
+    padding: 50 px 30px;
+    background-color: rgba(1, 1, 97, 0.884);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, .2);
+    border-radius: 16px;
+    
+    
+}
+
+div.form-input {
+    display: block;
+    font-size: 13px;
+}
+
+label, input {
+    display: table-cell;
+    margin-bottom: 10px;
+}
+
+label {
+    padding-right: 10px;
+}
+button {
+	color: #121213;
+}
