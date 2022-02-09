@@ -102,7 +102,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+#.env
 .venv
 env/
 venv/
@@ -128,5 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 #node modules
-node_modules
+#node_modules
 # sudo -u nodejs pm2 restart hello

@@ -2,44 +2,40 @@
 const LocalStrategy = require('passport-local')
 const bcrypt = require('bcrypt')
 const sqlite3 = require('sqlite3').verbose()
-const sqlite = require('aa-sqlite')
-
+//const sqlite = require('aa-sqlite')
+const db = require('./users')
 
 
 
 
 module.exports = async function(passport) {
-	await sqlite.open('./users.db')
+	
 	passport.use(
 		new LocalStrategy({usernameField: 'email'}, async (email, password, done) => {
-			//MatchUser
-			const sql = 'SELECT * FROM users WHERE email =?'			
-			 await sqlite.get(sql, [ email ], function(err, user) {
-				if (err) {
-					return done(err)
+			
+				const user = db.getUserByEmail(email)
+				if (user == null) {
+					return done(null, false, { message: 'No user with that email' })
 				}
-				if (!user) {
-					return done(null, false, {message: 'No user by this email'})
+
+				try {
+					if (await bcrypt.compare(password, user.password)) {
+						return done(null, user)
+					} else {
+						return done(null, false, { message: 'Password incorrect' })
+					}
+				} catch (e) {
+					return done(e)
 				}
-			//MatchPassword
-			bcrypt.compare(password, user.password, (err, isMatch) =>{
-				if (err) throw err
-				if (isMatch) {
-					return done(null, user)
-				} else {
-					return done(null, false, {message: 'Password incorrect'})
-				}
-			})
-			})
-			sqlite.close()
+			
+			
 		})	
 	)
-passport.serializeUser((user, done) => {
+	passport.serializeUser((user, done) => {
 	done(null, user.id)
 })
-passport.deserializeUser((id, done) => {
-	User.FindbyID(id, (err, user) => {
-		done(err, user)
-	})
-})
+	passport.deserializeUser((id, done) => {
+		return done(null, db.getUserById(id))
+	});
+
 }

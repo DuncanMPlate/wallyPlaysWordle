@@ -4,6 +4,8 @@ const axios = require("axios").default
 const express = require("express")
 const fs = require('fs')
 const cors = require("cors")
+const sqlite3 = require('sqlite3').verbose();
+const db = require('./js/users');
 const req = require("express/lib/request")
 const methodOverride = require('method-override')
 require('dotenv').config() 
@@ -12,29 +14,35 @@ const flash = require('express-flash')
 const session = require('express-session')
 app.use(cors())
 app.use(express.urlencoded({extended: false}))
+const bodyParser = require('body-parser')
+app.use(bodyParser.json())
 app.use(methodOverride('_method'))
 const bcrypt = require('bcrypt')
-const initializePassport = require('./passport-config')
-const passport = require("passport")
-initializePassport(
-	passport, 
-	email => users.find(user => user.email === email),
-	id => users.find(user => user.id === id)
-)
-const users = []
 
-app.use(flash())
+const passport = require("passport")
+
+// Passport Config
+require('./js/passport-config')(passport)
+// const initializePassport = require('./js/passport-config')
+// initializePassport(
+// 	passport,
+// 	email => users.find(user => user.email === email),
+// 	id => users.find(user => user.id === id)
+// )
+//Express Session
 app.use(session({
 	secret: process.env.SECRET,
-	resave: false,
-	saveUnitialized: false,
-
-}))
-
+	resave: true,
+	saveUnitialized: true,
+	}))
+//Passport Middleware
 app.use(passport.initialize())
 app.use(passport.session())
 
+//connect Flash
+app.use(flash())
 
+//Routes
 app.get('/', function (req, res) {
 	res.sendFile(path.join(__dirname, '/index.html',))
 	
@@ -56,7 +64,7 @@ app.get('/wordle.js', function (req, res) {
 	res.sendFile(__dirname + "/" + "wordle.js");
 });
 
-app.get('/accounts.html', checkAuthenticated, function (req, res) {
+app.get('/accounts.html', function (req, res) {
 	res.sendFile(__dirname + "/" + "accounts.html");
 });
 
@@ -72,34 +80,72 @@ app.get('/register', checkNotAuthenticated, function (req, res) {
 	res.sendFile(__dirname + "/" + "register.html");
 		
 });
+
+app.get('/users', checkAuthenticated, function(req, res){
+ 	res.sendFile(__dirname + "/js/users.sqlite3")
+})
+
+//Posts
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 	successRedirect: '/',
 	failureRedirect: '/login',
 	failureFlash: true
 }))
+// async function makeUser(req, res, next) {
+// 	try {
+// 		if (user != null) {
+// 			await db.createUser(makeUser, (err) => {
+// 				if (err) {
+// 					return console.error(err.message)
+// 				}
+// 				console.log("new user added")
+// 				res.status(200).json({ user })
+// 				next()
+// 			})
+// 		}
+// 	} catch (err) {
+// 		throw err
+// 	}
+
+// }
+//app.use(makeUser())
 app.post('/register', checkNotAuthenticated, async (req, res) => {
 	
 	try {
-		const hashedPassword = await bcrypt.hash(req.body.password, 10)
-		users.push({
-			id: Date.now().toString(),
-			name: req.body.name,
-			email: req.body.email,
-			password: hashedPassword
-
-		})
+		
+		 
+		
 		res.redirect('/login')
 	} catch {
+		console.log('User Not Created')
 		res.redirect('/register')
 	}
-	console.log(users)
+	
 });
+
+
+app.post('/users', async (req, res) => {
+	try {	
+		const hashedPassword = await bcrypt.hash(req.body.password, 10)
+		await db.createUser([req.body.name, Date.now(), req.body.email, hashedPassword], (err) => {
+			if (err) {
+				return console.error(err.message)
+			}
+			console.log("new user added")
+			res.redirect('/login')
+		})
+	} catch {
+		console.log('User Not Created')
+		res.redirect('/register')	
+	}
+
+})
 
 app.delete('/logout', (req, res) => {
 	req.logOut()
 	res.redirect('/')
 })
-
+//Wordle Functions
 app.get('/word', (req, res) => {
 	// console.log(res)
 	const file = fs.readFileSync(path.join(__dirname, '/words/words.txt'), 'utf8');
@@ -125,6 +171,8 @@ app.get('/check', (req, res) => {
 		}
 	
 })
+
+//Authentication checks for /s
 function checkAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next()
