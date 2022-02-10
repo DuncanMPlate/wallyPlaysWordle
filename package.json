@@ -5,6 +5,7 @@
   "main": "wordle.js",
   "scripts": {
     "start": "nodemon index.js",
+    "start-api": "nodemon users.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
