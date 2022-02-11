@@ -1,5 +1,5 @@
 const path = require("path")
-const PORT =  3000
+const PORT =  5000
 const axios = require("axios").default
 const express = require("express")
 const fs = require('fs')
@@ -197,12 +197,12 @@ app.post('/register', async (req, res) => {
 				return console.error(err.message)
 			}
 		})
-		sql.close((err) => {
-			if (err) {
-				return console.error(err.message);
-			}
-			console.log('Close the database connection.');
-		});
+		// sql.close((err) => {
+		// 	if (err) {
+		// 		return console.error(err.message);
+		// 	}
+		// 	console.log('Close the database connection.');
+		// });
 		console.log("new user added")
 		res.redirect('/login')
 		
